@@ -13,9 +13,3 @@ into the shell with all the packages and RStudio pre-installed.
 
 3. Run `rstudio` to launch RStudio.
 
-## How to run with Docker/Podman?
-
-If you don't want to install Nix on your main system, it's possible
-to run a container with Nix and project packages.
-
-
