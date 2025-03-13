@@ -13,3 +13,5 @@ into the shell with all the packages and RStudio pre-installed.
 
 3. Run `rstudio` to launch RStudio.
 
+If you have [direnv](https://github.com/direnv/direnv), then `.envrc` file
+allows us to enter the Nix shell when you `cd` into the directory.
