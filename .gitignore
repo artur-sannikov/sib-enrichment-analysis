@@ -3,3 +3,7 @@ data/
 *_files/
 .Rhistory
 .RData
+*.png
+*.xml
+*.rmarkdown
+
