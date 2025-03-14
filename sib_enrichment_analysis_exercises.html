@@ -101,9 +101,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import DE table:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>NK_vs_Th <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/NK_vs_Th_diff_gene_exercise_1.csv"</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">header =</span> T)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at the structure of the data.frame:</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(NK_vs_Th)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">header =</span> T</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at the structure of the data.frame:</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(NK_vs_Th)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  ensembl_gene_id   symbol      logFC         t      P.Value        p.adj
 1 ENSG00000000003   TSPAN6 -5.6436044 -4.672128 0.0000426000 7.358019e-04
@@ -114,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 6 ENSG00000000971      CFH -3.4129277 -2.788887 0.0084803000 4.610083e-02</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Search for a gene symbol in the data.frame, eg NCAM1 (CD56)</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>NK_vs_Th[<span class="fu">which</span>(NK_vs_Th<span class="sc">$</span>symbol<span class="sc">==</span><span class="st">"NCAM1"</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>NK_vs_Th[<span class="fu">which</span>(NK_vs_Th<span class="sc">$</span>symbol <span class="sc">==</span> <span class="st">"NCAM1"</span>), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     ensembl_gene_id symbol    logFC        t  P.Value        p.adj
 7624 ENSG00000149294  NCAM1 12.19755 6.992219 3.81e-08 2.845553e-06</code></pre>
@@ -150,14 +151,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>upregulated_th <span class="ot">&lt;-</span> <span class="fu">subset</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  NK_vs_Th, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  NK_vs_Th,</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  NK_vs_Th<span class="sc">$</span>p.adj <span class="sc">&lt;=</span> <span class="fl">0.05</span> <span class="sc">&amp;</span> NK_vs_Th<span class="sc">$</span>logFC <span class="sc">&lt;</span> <span class="dv">0</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>not_significant_genes <span class="ot">&lt;-</span> <span class="fu">subset</span>(</span>
 <span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  NK_vs_Th,</span>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  NK_vs_Th<span class="sc">$</span>p.adj <span class="sc">&gt;</span> <span class="fl">0.05</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>summary_upregulated <span class="ot">&lt;-</span> <span class="fu">summary</span>(upregulated_th<span class="sc">$</span>symbol <span class="sc">%in%</span> adaptive<span class="sc">$</span>gene)</span>
 <span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>summary_not_significant <span class="ot">&lt;-</span> <span class="fu">summary</span>(not_significant_genes<span class="sc">$</span>symbol <span class="sc">%in%</span> adaptive<span class="sc">$</span>gene)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -192,7 +193,663 @@ odds ratio
   4.580549 </code></pre>
 </div>
 </div>
+<p>The odds ratio tells us how different the two proportions are.</p>
+<p>If the confidence interval does not include 1, then p-value is small. We can reject null hypothesis thatthe odds ratio is equal to 1.</p>
+<p>There are more genes that are upregulated in the gene set than the genes that are not upregulated in the gene set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Test 3 gene sets among the genes up-regulated in NK cells,</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># with enricher()</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># First, obtain the genes up-regulated in NK:</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>nk_up_genes <span class="ot">&lt;-</span> <span class="fu">subset</span>(NK_vs_Th, NK_vs_Th<span class="sc">$</span>logFC <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> NK_vs_Th<span class="sc">$</span>p.adj <span class="sc">&lt;=</span> <span class="fl">0.05</span>)<span class="sc">$</span>symbol</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Import 2 other gene sets, 1 un-related to immune cells:</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>hair <span class="ot">&lt;-</span> <span class="fu">read.gmt</span>(<span class="st">"data/GOBP_HAIR_CELL_DIFFERENTIATION.v7.5.1.gmt"</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(hair)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 47  2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cell_active <span class="ot">&lt;-</span> <span class="fu">read.gmt</span>(<span class="st">"data/GOBP_CELL_ACTIVATION.v7.5.1.gmt"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(cell_active)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1095    2</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine the 3 gene sets into a single data.frame for the TERM2GENE argument:</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>genesets3 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(adaptive, hair, cell_active)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>hyper_3genesets <span class="ot">&lt;-</span> <span class="fu">enricher</span>(</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene =</span> nk_up_genes,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">universe =</span> NK_vs_Th<span class="sc">$</span>symbol,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">TERM2GENE =</span> genesets3,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">maxGSSize =</span> <span class="dv">1000</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>hyper_3genesets<span class="sc">@</span>result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                           ID
+GOBP_CELL_ACTIVATION                     GOBP_CELL_ACTIVATION
+GOBP_HAIR_CELL_DIFFERENTIATION GOBP_HAIR_CELL_DIFFERENTIATION
+GOBP_ADAPTIVE_IMMUNE_RESPONSE   GOBP_ADAPTIVE_IMMUNE_RESPONSE
+                                                  Description GeneRatio
+GOBP_CELL_ACTIVATION                     GOBP_CELL_ACTIVATION   173/200
+GOBP_HAIR_CELL_DIFFERENTIATION GOBP_HAIR_CELL_DIFFERENTIATION     5/200
+GOBP_ADAPTIVE_IMMUNE_RESPONSE   GOBP_ADAPTIVE_IMMUNE_RESPONSE    82/200
+                                BgRatio      pvalue    p.adjust      qvalue
+GOBP_CELL_ACTIVATION           896/1138 0.001505054 0.004515163 0.003168535
+GOBP_HAIR_CELL_DIFFERENTIATION  34/1138 0.741306145 0.912609682 0.640427847
+GOBP_ADAPTIVE_IMMUNE_RESPONSE  513/1138 0.912609682 0.912609682 0.640427847
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             geneID
+GOBP_CELL_ACTIVATION           FGR/CD38/SKAP2/ITGAL/TYROBP/RUNX3/NR1H3/SLAMF7/IFNGR1/STAP1/HDAC9/TSPAN32/RHOA/RAB27A/FCGR2B/TBX21/CST7/HOXA9/ITCH/MEF2C/PTPRC/LAT2/ICAM1/SNAP23/ABL1/HMOX1/IL2RB/SOS2/SLA2/NFATC2/MYL9/NBN/LILRB1/NKG7/CD33/PIK3CG/TGFBR1/MAP3K8/P2RX1/PRKAR1A/CTSC/ZBTB16/CRTAM/TCIRG1/LTBR/MAPK14/PDGFRB/BCL6/CD86/CBLB/LOXL3/IGFBP2/IL18R1/ID2/PLEK/PLA2G4A/RAB29/CD160/RPS6KA1/FOXO3/TNFSF11/PTK2B/SASH3/CD244/BTN2A2/SOX4/IRF1/TNFSF14/RAC2/CRACR2A/BST2/THEMIS2/AP3B1/PRAM1/SWAP70/VAV3/PTPN22/KLRC1/HAVCR2/TEC/DYSF/SERPINE2/LCP1/LRRC8A/TLN1/THBS1/ADAM10/MMRN1/PPP3CA/SLC15A4/IRF8/ERBB2/AKT1/XCL1/ILDR2/SOX13/DGKQ/MSN/GSN/CD226/IL18/DLG5/ADAM8/HHEX/CD8A/SH3RF1/KIT/SLAMF8/F11R/FCER1G/ITGB2/FCRL3/TNFSF13/VCAM1/EOMES/PRKCD/CSF2/SYK/NFIL3/ILK/NFKBID/TMIGD2/CD300A/NLRC3/CCDC88B/PTGDR/CX3CR1/INPP5D/PRELID1/P2RY1/ITGAM/LGALS9B/LGALS9C/AZU1/CD7/PTPN2/GAPT/YES1/ZBTB7A/PRF1/CXCR2/F2R/FES/PLCB1/ADGRG3/MRGPRX2/TBK1/JAG2/CD300LF/FANCA/PLSCR1/CNR2/NCR1/HSH2D/SPN/PLCG2/CARD11/SH2D1B/FCGR3A/NCR3/KLRC2/TRDC/IGHA2/IGHA1/CLIC1/KLRK1/LILRA2/HLA-DMB/DDOST/LYN/KLRC4-KLRK1/DGKK/CCL3
+GOBP_HAIR_CELL_DIFFERENTIATION                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     TRIOBP/JAG1/SLC9A3R1/NOTCH1/JAG2
+GOBP_ADAPTIVE_IMMUNE_RESPONSE                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         SLAMF7/RAB27A/FCGR2B/PVR/TBX21/STX7/MEF2C/PTPRC/LAT2/ICAM1/SLA2/JAG1/NBN/LILRB1/LILRA1/PIK3CG/CTSC/CRTAM/TCIRG1/TFEB/BCL6/CD86/LOXL3/IL18R1/PLA2G4A/CD160/PTK2B/ADCY7/SASH3/CD244/IRF1/C3/CRACR2A/RFTN1/SWAP70/KLRD1/KLRC1/HAVCR2/TEC/DBNL/SLC15A4/SIGLEC10/XCL1/NOTCH1/CD226/IL18/CD8A/FCER1G/TNFSF13/EOMES/PRKCD/ERAP1/SYK/NFKBID/LAIR1/CX3CR1/INPP5D/CD7/GAPT/C8G/PRF1/SPN/CLEC4C/SH2D1B/FCGR3A/KLRC2/IGLV2-18/IGLV2-11/TRGV9/TRBJ2-1/TRBJ2-2/TRBJ2-3/TRBJ2-4/TRBJ2-7/TRDC/IGHA2/IGHA1/SIPA1/KLRK1/HLA-DMB/LYN/KLRC4-KLRK1
+                               Count
+GOBP_CELL_ACTIVATION             173
+GOBP_HAIR_CELL_DIFFERENTIATION     5
+GOBP_ADAPTIVE_IMMUNE_RESPONSE     82</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sig_genes <span class="ot">&lt;-</span> <span class="fu">subset</span>(NK_vs_Th, NK_vs_Th<span class="sc">$</span>symbol <span class="sc">%in%</span> adaptive<span class="sc">$</span>gene <span class="sc">&amp;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  NK_vs_Th<span class="sc">$</span>p.adj <span class="sc">&lt;=</span> <span class="fl">0.05</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>sig_genes_label <span class="ot">&lt;-</span> <span class="fu">subset</span>(sig_genes, sig_genes<span class="sc">$</span>p.adj <span class="sc">&lt;=</span> <span class="fl">0.00001</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NK_vs_Th, <span class="fu">aes</span>(</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> logFC,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(p.adj)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)) <span class="sc">+</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"grey87"</span>) <span class="sc">+</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Genes belonging to the adaptive immune response gene set"</span>) <span class="sc">+</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> sig_genes_label,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> logFC,</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(p.adj), <span class="at">label =</span> symbol</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">max.overlaps =</span> <span class="dv">20</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> sig_genes, <span class="at">col =</span> <span class="st">"dodgerblue2"</span>) <span class="sc">+</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">name =</span> <span class="fu">expression</span>(<span class="st">"log"</span>[<span class="dv">2</span>] <span class="sc">*</span> <span class="st">"(fold change), NK vs Th cells"</span>)) <span class="sc">+</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="fu">expression</span>(<span class="st">"-"</span> <span class="sc">*</span> <span class="st">"log"</span>[<span class="dv">10</span>] <span class="sc">*</span> <span class="st">"(adj. p-value)"</span>)) <span class="sc">+</span></span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>), <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: ggrepel: 46 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
+</section>
+<section id="exercise-2---gene-set-enrichment-analysis-gsea" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2---gene-set-enrichment-analysis-gsea">Exercise 2 - Gene set enrichment analysis (GSEA)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>gl <span class="ot">&lt;-</span> NK_vs_Th<span class="sc">$</span>t</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(gl) <span class="ot">&lt;-</span> <span class="fu">make.names</span>(NK_vs_Th<span class="sc">$</span>symbol, <span class="at">unique =</span> T)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>gl <span class="ot">&lt;-</span> gl[<span class="fu">order</span>(gl, <span class="at">decreasing =</span> T)]</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>GO_NK_Th <span class="ot">&lt;-</span> <span class="fu">gseGO</span>(gl,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ont =</span> <span class="st">"BP"</span>,</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">OrgDb =</span> org.Hs.eg.db,</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">keyType =</span> <span class="st">"SYMBOL"</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">minGSSize =</span> <span class="dv">30</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">eps =</span> <span class="dv">0</span>,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">seed =</span> T</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>preparing geneSet collections...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>GSEA analysis...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in preparePathwaysAndStats(pathways, stats, minSize, maxSize, gseaParam, : There are ties in the preranked stats (0.07% of the list).
+The order of those tied genes will be arbitrary, which may produce unexpected results.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>leading edge analysis...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>done...</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>GO_NK_Th</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>#
+# Gene Set Enrichment Analysis
+#
+#...@organism    Homo sapiens 
+#...@setType     BP 
+#...@keytype     SYMBOL 
+#...@geneList    Named num [1:20485] 19 13.1 12.1 12 10.7 ...
+ - attr(*, "names")= chr [1:20485] "GHSR" "MLC1" "SH2D1B" "TRGV9" ...
+#...nPerm    
+#...pvalues adjusted by 'BH' with cutoff &lt;0.05 
+#...351 enriched terms found
+'data.frame':   351 obs. of  11 variables:
+ $ ID             : chr  "GO:0002181" "GO:0042254" "GO:0022613" "GO:0042273" ...
+ $ Description    : chr  "cytoplasmic translation" "ribosome biogenesis" "ribonucleoprotein complex biogenesis" "ribosomal large subunit biogenesis" ...
+ $ setSize        : int  145 299 436 69 98 57 210 340 111 242 ...
+ $ enrichmentScore: num  -0.808 -0.551 -0.491 -0.715 -0.648 ...
+ $ NES            : num  -3.38 -2.52 -2.36 -2.67 -2.58 ...
+ $ pvalue         : num  1.68e-48 6.30e-24 2.34e-22 1.48e-14 3.84e-14 ...
+ $ p.adjust       : num  4.85e-45 9.08e-21 2.25e-19 1.07e-11 2.21e-11 ...
+ $ qvalue         : num  3.77e-45 7.05e-21 1.75e-19 8.27e-12 1.72e-11 ...
+ $ rank           : num  1385 3723 3746 2698 2371 ...
+ $ leading_edge   : chr  "tags=58%, list=7%, signal=54%" "tags=38%, list=18%, signal=32%" "tags=34%, list=18%, signal=29%" "tags=52%, list=13%, signal=45%" ...
+ $ core_enrichment: chr  "EIF2S2/EIF3M/RPL21/RPS28/EIF4A2/YBX1/FAU/PKM/RPS9/CNBP/RPL37/RPL37A/UBA52/RPS15/RPL22/RPL27/RPS7/RPS11/RPL35/RP"| __truncated__ "UTP23/TMA16/ZNF658/NOB1/WDR43/DHX37/MRPL20/RPS24/EIF2A/ABCE1/RBFA/USP16/METTL16/NOL11/EXOSC8/EXOSC6/TRAF7/LYAR/"| __truncated__ "SRSF6/UTP23/TMA16/ZNF658/SRPK1/NOB1/WDR43/DHX37/MRPL20/RPS24/EIF2A/SF3B5/ABCE1/PTBP2/RBFA/USP16/METTL16/NOL11/S"| __truncated__ "ZNHIT3/SDAD1/MRTO4/RPL26L1/RPLP0P6/FASTKD2/NHP2/NOP16/RSL24D1/PES1/DHX30/WDR74/MALSU1/RSL1D1/NOL9/DDX18/NSA2/GT"| __truncated__ ...
+#...Citation
+ T Wu, E Hu, S Xu, M Chen, P Guo, Z Dai, T Feng, L Zhou, W Tang, L Zhan, X Fu, S Liu, X Bo, and G Yu.
+ clusterProfiler 4.0: A universal enrichment tool for interpreting omics data.
+ The Innovation. 2021, 2(3):100141 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Class is gseaResult</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(GO_NK_Th)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "gseaResult"
+attr(,"package")
+[1] "DOSE"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Is the adaptive immune response gene set significant?</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>GO_NK_Th[GO_NK_Th<span class="sc">@</span>result<span class="sc">$</span>Description <span class="sc">==</span> <span class="st">"adaptive immune response"</span>, ] <span class="co"># yes</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   ID              Description setSize enrichmentScore
+GO:0002250 GO:0002250 adaptive immune response     423      -0.3652034
+                 NES       pvalue     p.adjust       qvalue rank
+GO:0002250 -1.743904 1.001619e-08 1.804167e-06 1.400949e-06 1623
+                            leading_edge
+GO:0002250 tags=23%, list=8%, signal=22%
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    core_enrichment
+GO:0002250 HFE/CD3E/CLU/PDCD1LG2/ADGRE1/JAK3/LEF1/IL18BP/ITK/CD80/ALCAM/TRAV34/AIRE/IGHM/BTLA/CR1/C1QBP/CD3G/CTSL/TRAJ42/TRBV16/TNF/CEACAM1/GPR183/CD27/CCR6/ICOSLG/TRDV1/CCR2/CD6/TRBD1/MCOLN2/TRAV14DV4/IL2/CR2/TRAV22/CD70/PDCD1/MALT1/EBAG9/TRAV30/CTLA4/TRAV23DV6/TNFRSF13C/KDM5D/TRAV40/TRAV18/IL6R/CD3D/TRAJ3/TRAV39/TRBC2/SAMSN1/IL7R/TRAV19/SUSD4/TRAV20/CD84/TRAV10/TRAV21/TRBV13/TRAV41/TRAV29DV5/NDFIP1/TRAV36DV7/THEMIS/TRBV18/TRAT1/SOCS3/IL6ST/TRBV9/TRAV24/TRAV3/TRAV27/TRAV4/TRAV6/TRAV2/TRAV5/JUNB/TRBV19/TRAV35/TRBV30/FOXP3/TRAV16/IL23A/TRBV2/TRBV14/PAG1/CD4/TRAV25/SIT1/TRAV17/CD40LG/CAMK4/TRAC/CD28/SLAMF1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># How many gene sets are down- or up-regulated?</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>count_gene_sets <span class="ot">&lt;-</span> <span class="cf">function</span>(gsea, p_value) {</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  up <span class="ot">&lt;-</span> <span class="fu">summary</span>(gsea<span class="sc">@</span>result<span class="sc">$</span>p.adjust <span class="sc">&lt;</span> p_value <span class="sc">&amp;</span> gsea<span class="sc">@</span>result<span class="sc">$</span>NES <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  down <span class="ot">&lt;-</span> <span class="fu">summary</span>(gsea<span class="sc">@</span>result<span class="sc">$</span>p.adjust <span class="sc">&lt;</span> p_value <span class="sc">&amp;</span> gsea<span class="sc">@</span>result<span class="sc">$</span>NES <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="at">upregulated =</span> up, <span class="at">downregulated =</span> down))</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 290 upregulated, 61 downregulated</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="fu">count_gene_sets</span>(GO_NK_Th, <span class="fl">0.05</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$upregulated
+   Mode   FALSE    TRUE 
+logical      61     290 
+
+$downregulated
+   Mode   FALSE    TRUE 
+logical     290      61 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_simplify <span class="ot">&lt;-</span> clusterProfiler<span class="sc">::</span><span class="fu">simplify</span>(GO_NK_Th)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_simplify<span class="sc">@</span>result[GO_NK_Th_simplify<span class="sc">@</span>result<span class="sc">$</span>Description <span class="sc">==</span> <span class="st">"adaptive immune response"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   ID              Description setSize enrichmentScore
+GO:0002250 GO:0002250 adaptive immune response     423      -0.3652034
+                 NES       pvalue     p.adjust       qvalue rank
+GO:0002250 -1.743904 1.001619e-08 1.804167e-06 1.400949e-06 1623
+                            leading_edge
+GO:0002250 tags=23%, list=8%, signal=22%
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    core_enrichment
+GO:0002250 HFE/CD3E/CLU/PDCD1LG2/ADGRE1/JAK3/LEF1/IL18BP/ITK/CD80/ALCAM/TRAV34/AIRE/IGHM/BTLA/CR1/C1QBP/CD3G/CTSL/TRAJ42/TRBV16/TNF/CEACAM1/GPR183/CD27/CCR6/ICOSLG/TRDV1/CCR2/CD6/TRBD1/MCOLN2/TRAV14DV4/IL2/CR2/TRAV22/CD70/PDCD1/MALT1/EBAG9/TRAV30/CTLA4/TRAV23DV6/TNFRSF13C/KDM5D/TRAV40/TRAV18/IL6R/CD3D/TRAJ3/TRAV39/TRBC2/SAMSN1/IL7R/TRAV19/SUSD4/TRAV20/CD84/TRAV10/TRAV21/TRBV13/TRAV41/TRAV29DV5/NDFIP1/TRAV36DV7/THEMIS/TRBV18/TRAT1/SOCS3/IL6ST/TRBV9/TRAV24/TRAV3/TRAV27/TRAV4/TRAV6/TRAV2/TRAV5/JUNB/TRBV19/TRAV35/TRBV30/FOXP3/TRAV16/IL23A/TRBV2/TRBV14/PAG1/CD4/TRAV25/SIT1/TRAV17/CD40LG/CAMK4/TRAC/CD28/SLAMF1</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">strsplit</span>(</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  GO_NK_Th<span class="sc">@</span>result[GO_NK_Th<span class="sc">@</span>result<span class="sc">$</span>Description <span class="sc">==</span> <span class="st">"adaptive immune response"</span>, <span class="dv">11</span>],</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"</span><span class="sc">\\</span><span class="st">/"</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "HFE"       "CD3E"      "CLU"       "PDCD1LG2"  "ADGRE1"    "JAK3"     
+ [7] "LEF1"      "IL18BP"    "ITK"       "CD80"      "ALCAM"     "TRAV34"   
+[13] "AIRE"      "IGHM"      "BTLA"      "CR1"       "C1QBP"     "CD3G"     
+[19] "CTSL"      "TRAJ42"    "TRBV16"    "TNF"       "CEACAM1"   "GPR183"   
+[25] "CD27"      "CCR6"      "ICOSLG"    "TRDV1"     "CCR2"      "CD6"      
+[31] "TRBD1"     "MCOLN2"    "TRAV14DV4" "IL2"       "CR2"       "TRAV22"   
+[37] "CD70"      "PDCD1"     "MALT1"     "EBAG9"     "TRAV30"    "CTLA4"    
+[43] "TRAV23DV6" "TNFRSF13C" "KDM5D"     "TRAV40"    "TRAV18"    "IL6R"     
+[49] "CD3D"      "TRAJ3"     "TRAV39"    "TRBC2"     "SAMSN1"    "IL7R"     
+[55] "TRAV19"    "SUSD4"     "TRAV20"    "CD84"      "TRAV10"    "TRAV21"   
+[61] "TRBV13"    "TRAV41"    "TRAV29DV5" "NDFIP1"    "TRAV36DV7" "THEMIS"   
+[67] "TRBV18"    "TRAT1"     "SOCS3"     "IL6ST"     "TRBV9"     "TRAV24"   
+[73] "TRAV3"     "TRAV27"    "TRAV4"     "TRAV6"     "TRAV2"     "TRAV5"    
+[79] "JUNB"      "TRBV19"    "TRAV35"    "TRBV30"    "FOXP3"     "TRAV16"   
+[85] "IL23A"     "TRBV2"     "TRBV14"    "PAG1"      "CD4"       "TRAV25"   
+[91] "SIT1"      "TRAV17"    "CD40LG"    "CAMK4"     "TRAC"      "CD28"     
+[97] "SLAMF1"   </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>GO_NK_Th<span class="sc">@</span>geneSets<span class="sc">$</span><span class="st">`</span><span class="at">GO:0002250</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] "ADA"         "ADCY7"       "AGER"        "JAG1"        "AHR"        
+  [6] "ALCAM"       "ALOX15"      "ANXA1"       "AIRE"        "ARG1"       
+ [11] "ARG2"        "ASCL2"       "B2M"         "BCL3"        "BCL6"       
+ [16] "TNFRSF17"    "CEACAM1"     "PRDM1"       "BMX"         "BTK"        
+ [21] "C1QBP"       "SERPING1"    "C1QA"        "C1QB"        "C1QC"       
+ [26] "C1R"         "C1S"         "C2"          "C3"          "C4A"        
+ [31] "C4B"         "C4BPA"       "C4BPB"       "C5"          "C6"         
+ [36] "C7"          "C8A"         "C8B"         "C8G"         "C9"         
+ [41] "CAMK4"       "CD1A"        "CD1B"        "CD1C"        "CD1D"       
+ [46] "CD1E"        "CD3D"        "CD3E"        "CD3G"        "CD247"      
+ [51] "CD4"         "CD6"         "CD7"         "CD8A"        "CD8B"       
+ [56] "CD8B2"       "CD19"        "CD27"        "CD28"        "CD80"       
+ [61] "CD86"        "CD40"        "CD40LG"      "CD70"        "CD74"       
+ [66] "CD79A"       "CD79B"       "CD81"        "CTSC"        "CLC"        
+ [71] "CLU"         "CCR6"        "CR1"         "CR1L"        "CR2"        
+ [76] "CSF2RB"      "CSK"         "CTLA4"       "CTSH"        "CTSL"       
+ [81] "CTSS"        "CX3CR1"      "CD55"        "GPR183"      "EMP2"       
+ [86] "ADGRE1"      "EPHB2"       "ERCC1"       "PTK2B"       "FCER1A"     
+ [91] "FCER1G"      "FCER2"       "FCGR1A"      "FCGR1BP"     "FCGR2B"     
+ [96] "FCGR3A"      "FGA"         "FGB"         "FGL1"        "FOXJ1"      
+[101] "MTOR"        "FUT7"        "FYN"         "GATA3"       "GNL1"       
+[106] "MSH6"        "GZMM"        "NCKAP1L"     "HFE"         "HLA-A"      
+[111] "HLA-B"       "HLA-C"       "HLA-DMA"     "HLA-DMB"     "HLA-DOA"    
+[116] "HLA-DOB"     "HLA-DPA1"    "HLA-DPB1"    "HLA-DQA1"    "HLA-DQA2"   
+[121] "HLA-DQB1"    "HLA-DQB2"    "HLA-DRA"     "HLA-DRB1"    "HLA-DRB3"   
+[126] "HLA-DRB4"    "HLA-DRB5"    "HLA-E"       "HLA-F"       "HLA-G"      
+[131] "HLA-H"       "MR1"         "HLX"         "HMGB1"       "HPRT1"      
+[136] "HPX"         "HRAS"        "HSPD1"       "ICAM1"       "CFI"        
+[141] "IFNA1"       "IFNA2"       "IFNA4"       "IFNA5"       "IFNA6"      
+[146] "IFNA7"       "IFNA8"       "IFNA10"      "IFNA13"      "IFNA14"     
+[151] "IFNA16"      "IFNA17"      "IFNA21"      "IFNB1"       "IFNG"       
+[156] "IFNW1"       "IGHA1"       "IGHA2"       "IGHD"        "IGHE"       
+[161] "IGHG1"       "IGHG2"       "IGHG3"       "IGHG4"       "IGHM"       
+[166] "JCHAIN"      "IGKC"        "IGLC1"       "IGLC2"       "IGLC3"      
+[171] "IGLC6"       "IGLL1"       "IL1B"        "IL1R1"       "IL2"        
+[176] "IL2RB"       "IL4"         "IL4R"        "IL6"         "IL6R"       
+[181] "IL6ST"       "IL7R"        "IL9"         "IL9R"        "IL10"       
+[186] "IL12A"       "IL12B"       "IL12RB1"     "IL13RA2"     "IL17A"      
+[191] "IL18"        "INPP5D"      "IRF1"        "IRF4"        "IRF7"       
+[196] "ITK"         "JAK1"        "JAK2"        "JAK3"        "JUNB"       
+[201] "KCNJ8"       "KLRC1"       "KLRC2"       "KLRD1"       "LAG3"       
+[206] "LAIR1"       "LIG4"        "LTA"         "LY9"         "LYN"        
+[211] "SH2D1A"      "SMAD7"       "MBL2"        "CD46"        "MEF2C"      
+[216] "MICB"        "MLH1"        "MPL"         "MSH2"        "MYD88"      
+[221] "NBN"         "NFKB2"       "NOTCH1"      "P2RX7"       "PDCD1"      
+[226] "PHB1"        "PIK3CD"      "PIK3CG"      "PLA2G4A"     "PMS2"       
+[231] "PPP3CB"      "PRF1"        "PRKCB"       "PRKCD"       "PKN1"       
+[236] "PRKCQ"       "PRKCZ"       "PSG9"        "PTPN6"       "PTPRC"      
+[241] "PVR"         "NECTIN2"     "RAB27A"      "RAG1"        "RAP1GAP"    
+[246] "RELB"        "TRIM27"      "RORA"        "RORC"        "CCL19"      
+[251] "XCL1"        "SIPA1"       "SLAMF1"      "SLC11A1"     "SPN"        
+[256] "STAT3"       "STAT4"       "STAT6"       "SUPT6H"      "SYK"        
+[261] "ADAM17"      "MAP3K7"      "TAP1"        "TAP2"        "TRA"        
+[266] "TRAV6"       "TRB"         "TRGC1"       "TRGC2"       "TRGV1"      
+[271] "TRGV2"       "TRGV3"       "TRGV4"       "TRGV5"       "TRGV8"      
+[276] "TRGV9"       "TRGV10"      "TRGV11"      "TEC"         "TFE3"       
+[281] "TFRC"        "TGFB1"       "TLR4"        "TNF"         "TNFAIP3"    
+[286] "TNFRSF1B"    "TP53BP1"     "TRAF2"       "TRAF6"       "TSC1"       
+[291] "TNFSF4"      "TXK"         "TYK2"        "UNG"         "WAS"        
+[296] "LAT2"        "NSD2"        "ZAP70"       "ZP3"         "FZD5"       
+[301] "TFEB"        "KDM5D"       "EOMES"       "STX7"        "SKAP1"      
+[306] "TNFSF13"     "TNFRSF14"    "RIPK2"       "FADD"        "TNFRSF11A"  
+[311] "IL18R1"      "CD84"        "BCL10"       "TNFSF18"     "SOCS3"      
+[316] "RNF8"        "EXO1"        "EBAG9"       "IL1RL1"      "SLC22A13"   
+[321] "IL27RA"      "SOCS5"       "THOC1"       "PARP3"       "IL18BP"     
+[326] "EBI3"        "LILRB2"      "TCIRG1"      "CLEC4M"      "BTN3A3"     
+[331] "RAPGEF3"     "MAD2L2"      "CLEC10A"     "BATF"        "CXCL13"     
+[336] "CD226"       "TNFSF13B"    "MASP2"       "TRAF3IP2"    "LILRB1"     
+[341] "ARID5A"      "MALT1"       "LILRB5"      "LILRB4"      "LILRA1"     
+[346] "LILRB3"      "LILRA3"      "RIPK3"       "RAPGEF4"     "BTN3A2"     
+[351] "BTN3A1"      "CD160"       "DUSP10"      "TREX1"       "ZBTB1"      
+[356] "KLRK1"       "PAXIP1"      "SWAP70"      "RAP1GAP2"    "RFTN1"      
+[361] "ICOSLG"      "SIRT1"       "TNFRSF13B"   "CLCF1"       "IL17RA"     
+[366] "PRKD2"       "TMEM98"      "LAT"         "LAMP3"       "SIT1"       
+[371] "TNFRSF21"    "IGKV1-5"     "IGHV8-51-1"  "IGHV7-81"    "IGHV6-1"    
+[376] "IGHV5-10-1"  "IGHV5-51"    "IGHV4-38-2"  "IGHV4-61"    "IGHV4-59"   
+[381] "IGHV4-39"    "IGHV4-34"    "IGHV4-31"    "IGHV4-30-4"  "IGHV4-28"   
+[386] "IGHV4-4"     "IGHV3-38-3"  "IGHV3-74"    "IGHV3-73"    "IGHV3-72"   
+[391] "IGHV3-66"    "IGHV3-64"    "IGHV3-53"    "IGHV3-49"    "IGHV3-48"   
+[396] "IGHV3-43"    "IGHV3-38"    "IGHV3-35"    "IGHV3-33"    "IGHV3-30"   
+[401] "IGHV3-23"    "IGHV3-21"    "IGHV3-20"    "IGHV3-16"    "IGHV3-15"   
+[406] "IGHV3-13"    "IGHV3-11"    "IGHV3-9"     "IGHV3-7"     "IGHV2-70"   
+[411] "IGHV2-26"    "IGHV2-5"     "IGHV1-69-2"  "IGHV1-38-4"  "IGHV1-69"   
+[416] "IGHV1-58"    "IGHV1-45"    "IGHV1-24"    "IGHV1-18"    "IGHV1-8"    
+[421] "IGHV1-3"     "IGHJ1"       "IGHD1-1"     "TRDV3"       "TRDV2"      
+[426] "TRDV1"       "TRDJ1"       "TRDD1"       "TRDC"        "TRBV30"     
+[431] "TRBV29-1"    "TRBV28"      "TRBV27"      "TRBV25-1"    "TRBV24-1"   
+[436] "TRBV23-1"    "TRBV20-1"    "TRBV19"      "TRBV18"      "TRBV17"     
+[441] "TRBV16"      "TRBV14"      "TRBV13"      "TRBV12-5"    "TRBV12-4"   
+[446] "TRBV12-3"    "TRBV11-3"    "TRBV11-2"    "TRBV11-1"    "TRBV10-3"   
+[451] "TRBV10-2"    "TRBV10-1"    "TRBV9"       "TRBV7-9"     "TRBV7-8"    
+[456] "TRBV7-7"     "TRBV7-6"     "TRBV7-4"     "TRBV7-3"     "TRBV7-2"    
+[461] "TRBV7-1"     "TRBV6-9"     "TRBV6-8"     "TRBV6-7"     "TRBV6-6"    
+[466] "TRBV6-5"     "TRBV6-4"     "TRBV6-3"     "TRBV6-1"     "TRBV5-8"    
+[471] "TRBV5-7"     "TRBV5-6"     "TRBV5-5"     "TRBV5-4"     "TRBV5-3"    
+[476] "TRBV5-1"     "TRBV4-3"     "TRBV4-2"     "TRBV4-1"     "TRBV3-1"    
+[481] "TRBV2"       "TRBJ2-7"     "TRBJ2-6"     "TRBJ2-5"     "TRBJ2-4"    
+[486] "TRBJ2-3"     "TRBJ2-2"     "TRBJ2-1"     "TRBJ1-6"     "TRBJ1-5"    
+[491] "TRBJ1-4"     "TRBJ1-3"     "TRBJ1-2"     "TRBJ1-1"     "TRBD1"      
+[496] "TRBC2"       "TRBC1"       "TRAV41"      "TRAV40"      "TRAV39"     
+[501] "TRAV38-2DV8" "TRAV38-1"    "TRAV36DV7"   "TRAV35"      "TRAV34"     
+[506] "TRAV30"      "TRAV29DV5"   "TRAV27"      "TRAV26-2"    "TRAV26-1"   
+[511] "TRAV25"      "TRAV24"      "TRAV23DV6"   "TRAV22"      "TRAV21"     
+[516] "TRAV20"      "TRAV19"      "TRAV18"      "TRAV17"      "TRAV16"     
+[521] "TRAV14DV4"   "TRAV13-2"    "TRAV13-1"    "TRAV12-3"    "TRAV12-2"   
+[526] "TRAV12-1"    "TRAV10"      "TRAV9-2"     "TRAV9-1"     "TRAV8-6"    
+[531] "TRAV8-4"     "TRAV8-3"     "TRAV8-2"     "TRAV8-1"     "TRAV7"      
+[536] "TRAV5"       "TRAV4"       "TRAV3"       "TRAV2"       "TRAV1-2"    
+[541] "TRAV1-1"     "TRAJ42"      "TRAJ31"      "TRAJ3"       "TRAC"       
+[546] "IGLV11-55"   "IGLV10-54"   "IGLV9-49"    "IGLV8-61"    "IGLV7-46"   
+[551] "IGLV7-43"    "IGLV6-57"    "IGLV5-52"    "IGLV5-48"    "IGLV5-45"   
+[556] "IGLV5-39"    "IGLV5-37"    "IGLV4-69"    "IGLV4-60"    "IGLV4-3"    
+[561] "IGLV3-32"    "IGLV3-27"    "IGLV3-25"    "IGLV3-22"    "IGLV3-21"   
+[566] "IGLV3-19"    "IGLV3-16"    "IGLV3-12"    "IGLV3-10"    "IGLV3-9"    
+[571] "IGLV3-1"     "IGLV2-33"    "IGLV2-23"    "IGLV2-18"    "IGLV2-14"   
+[576] "IGLV2-11"    "IGLV2-8"     "IGLV1-51"    "IGLV1-50"    "IGLV1-47"   
+[581] "IGLV1-44"    "IGLV1-40"    "IGLV1-36"    "IGLJ1"       "IGLC7"      
+[586] "IGKV6D-41"   "IGKV6D-21"   "IGKV3D-20"   "IGKV3D-15"   "IGKV3D-11"  
+[591] "IGKV3D-7"    "IGKV2D-30"   "IGKV2D-29"   "IGKV2D-28"   "IGKV2D-26"  
+[596] "IGKV2D-24"   "IGKV1D-43"   "IGKV1D-42"   "IGKV1D-39"   "IGKV1D-37"  
+[601] "IGKV1D-33"   "IGKV1D-17"   "IGKV1D-13"   "IGKV1D-12"   "IGKV1D-8"   
+[606] "IGKV6-21"    "IGKV5-2"     "IGKV4-1"     "IGKV3-20"    "IGKV3-15"   
+[611] "IGKV3-7"     "IGKV2-40"    "IGKV2-30"    "IGKV2-29"    "IGKV2-28"   
+[616] "IGKV2-24"    "IGKV1-39"    "IGKV1-37"    "IGKV1-27"    "IGKV1-17"   
+[621] "IGKV1-16"    "IGKV1-13"    "IGKV1-12"    "IGKV1-9"     "IGKV1-8"    
+[626] "IGKV1-6"     "IGKJ1"       "DBNL"        "PYCARD"      "CD274"      
+[631] "TBX21"       "CD209"       "IL21R"       "TRAT1"       "CLEC4A"     
+[636] "FOXP3"       "EXOSC3"      "ZBTB7B"      "KMT5B"       "LEF1"       
+[641] "C1RL"        "TLR8"        "IL23A"       "CYRIB"       "CD244"      
+[646] "ERAP1"       "IL20RB"      "TREM2"       "TREM1"       "SASH3"      
+[651] "SHLD2"       "RC3H2"       "TRPM4"       "LAX1"        "LIME1"      
+[656] "RNF125"      "SUSD4"       "AKIRIN2"     "RIF1"        "OTUB1"      
+[661] "PAG1"        "CTNNBL1"     "IFNK"        "DUSP22"      "HMCES"      
+[666] "OTUD7B"      "ENTPD7"      "MCOLN1"      "IGHV7-4-1"   "IGHV3-30-3" 
+[671] "AICDA"       "SLAMF7"      "HMHB1"       "BACH2"       "MYO1G"      
+[676] "SAMSN1"      "NOD2"        "ERAP2"       "CARD9"       "SEMA4A"     
+[681] "NFKBIZ"      "DCLRE1C"     "CLEC7A"      "LILRA6"      "ULBP3"      
+[686] "VTCN1"       "BTNL8"       "ATAD5"       "SVEP1"       "ZC3H12A"    
+[691] "ULBP2"       "ULBP1"       "PDCD1LG2"    "PRR7"        "NDFIP1"     
+[696] "FBXO38"      "UNC93B1"     "FCRL4"       "JAM3"        "FCAMR"      
+[701] "SLA2"        "SANBR"       "LOXL3"       "CRACR2A"     "KMT5C"      
+[706] "NFKBID"      "HAVCR2"      "ORAI1"       "IGHV3-30-5"  "SIGLEC10"   
+[711] "KLHL6"       "IL33"        "RSAD2"       "CLEC6A"      "IL17F"      
+[716] "NLRP3"       "SLAMF6"      "TNFRSF13C"   "SH2D1B"      "EXOSC6"     
+[721] "SLC15A4"     "RNF19B"      "RAET1E"      "RC3H1"       "IL23R"      
+[726] "SHLD1"       "BTLA"        "RAET1L"      "DENND1B"     "RNF168"     
+[731] "CLEC4C"      "APLF"        "UNC13D"      "GAPT"        "MARCHF8"    
+[736] "IL27"        "MCOLN2"      "ZNF683"      "IL4I1"       "NLRP10"     
+[741] "CLEC4D"      "IFNE"        "CLEC4G"      "RAET1G"      "NCR3LG1"    
+[746] "THEMIS"      "MIR21"       "EIF2AK4"     "TARM1"       "SCART1"     
+[751] "CCR2"        "C17orf99"    "IGLL5"       "MICA"        "KLRC4-KLRK1"
+[756] "IGHV2-70D"   "IGHV1-69D"   "IGHV3-64D"   "IGHV3-43D"   "SHLD3"      </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>GO_enrich <span class="ot">&lt;-</span> <span class="fu">enrichGO</span>(</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">gene =</span> nk_up_genes,</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">OrgDb =</span> org.Hs.eg.db,</span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">keyType =</span> <span class="st">"SYMBOL"</span>,</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ont =</span> <span class="st">"MF"</span>, <span class="co"># ont="MF" is the default</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">minGSSize =</span> <span class="dv">30</span>, <span class="at">universe =</span> NK_vs_Th<span class="sc">$</span>symbol</span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="exercise-3---visualization-of-enrichment-results" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3---visualization-of-enrichment-results">Exercise 3 - Visualization of enrichment results</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">rev</span>(<span class="sc">-</span><span class="fu">log10</span>(GO_NK_Th<span class="sc">@</span>result<span class="sc">$</span>p.adjust[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])),</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">horiz =</span> T, <span class="at">names =</span> <span class="fu">rev</span>(GO_NK_Th<span class="sc">@</span>result<span class="sc">$</span>Description[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]),</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">"-log10(adj.p-value)"</span>,</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex.names =</span> <span class="fl">0.7</span>,</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"lightgreen"</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Barplot%20of%20log-adjusted%20p-values%20of%20GO%20terms-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>sorted_GO_NK_Th <span class="ot">&lt;-</span> GO_NK_Th<span class="sc">@</span>result[<span class="fu">order</span>(GO_NK_Th<span class="sc">@</span>result<span class="sc">$</span>NES, <span class="at">decreasing =</span> F), ]</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>sorted_GO_NK_Th<span class="sc">$</span>colors <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(sorted_GO_NK_Th<span class="sc">$</span>NES <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="st">"red"</span>, <span class="st">"blue"</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get the indices of the vector</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>bottom_values <span class="ot">&lt;-</span> <span class="fu">tail</span>(<span class="fu">seq_along</span>(sorted_GO_NK_Th<span class="sc">$</span>NES), <span class="dv">10</span>)</span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">15</span>, <span class="dv">3</span>, <span class="dv">3</span>)) <span class="co"># Make the figure canvas larger</span></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(sorted_GO_NK_Th<span class="sc">$</span>NES[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, bottom_values<span class="sc">:</span><span class="fu">nrow</span>(sorted_GO_NK_Th))],</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">horiz =</span> T, <span class="at">names =</span> sorted_GO_NK_Th<span class="sc">$</span>Description[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, bottom_values<span class="sc">:</span><span class="fu">nrow</span>(sorted_GO_NK_Th))],</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">"NES"</span>,</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex.names =</span> <span class="fl">0.7</span>,</span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> sorted_GO_NK_Th<span class="sc">$</span>color[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, (<span class="fu">nrow</span>(sorted_GO_NK_Th) <span class="sc">-</span> <span class="dv">9</span>)<span class="sc">:</span><span class="fu">nrow</span>(sorted_GO_NK_Th))]</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in bottom_values:nrow(sorted_GO_NK_Th): numerical expression has 10
+elements: only the first used
+
+Warning in bottom_values:nrow(sorted_GO_NK_Th): numerical expression has 10
+elements: only the first used</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Plot%20of%20top%2010%20up-%20and%20down-regulated%20gene%20sets-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use the GO_enrich analysis performed above, of the over-representation analysis</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="co"># of genes up-regulated in NK cells:</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co"># barplot() can be directly used on enrichResult objects: but not on gseaResult objects</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>graphics<span class="sc">::</span><span class="fu">barplot</span>(GO_enrich)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>graphics<span class="sc">::</span><span class="fu">barplot</span>(GO_enrich, <span class="at">color =</span> <span class="st">"qvalue"</span>, <span class="at">x =</span> <span class="st">"GeneRatio"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/unnamed-chunk-19-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select only 2 out of the significant gene sets:</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>ego_selection <span class="ot">&lt;-</span> GO_enrich[GO_enrich<span class="sc">@</span>result<span class="sc">$</span>ID <span class="sc">==</span> <span class="st">"GO:0042287"</span> <span class="sc">|</span> GO_enrich<span class="sc">@</span>result<span class="sc">$</span>ID <span class="sc">==</span> <span class="st">"GO:0004713"</span>, asis <span class="ot">=</span> T]</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(ego_selection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/unnamed-chunk-19-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Barcode plot</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># You need the ID of the GO gene set to plot:</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>GO_NK_Th<span class="sc">@</span>result[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   ID                          Description setSize
+GO:0002181 GO:0002181              cytoplasmic translation     145
+GO:0042254 GO:0042254                  ribosome biogenesis     299
+GO:0022613 GO:0022613 ribonucleoprotein complex biogenesis     436
+GO:0042273 GO:0042273   ribosomal large subunit biogenesis      69
+GO:0042274 GO:0042274   ribosomal small subunit biogenesis      98
+GO:0042255 GO:0042255                    ribosome assembly      57
+GO:0006364 GO:0006364                      rRNA processing     210
+GO:0002443 GO:0002443          leukocyte mediated immunity     340
+GO:0001909 GO:0001909      leukocyte mediated cytotoxicity     111
+GO:0016072 GO:0016072               rRNA metabolic process     242
+           enrichmentScore       NES       pvalue
+GO:0002181      -0.8083663 -3.375135 1.684522e-48
+GO:0042254      -0.5505406 -2.519660 6.298394e-24
+GO:0022613      -0.4906673 -2.357458 2.339798e-22
+GO:0042273      -0.7146074 -2.668647 1.478487e-14
+GO:0042274      -0.6484741 -2.580517 3.835801e-14
+GO:0042255      -0.7361084 -2.671760 2.555521e-13
+GO:0006364      -0.5004485 -2.197559 1.614149e-12
+GO:0002443       0.4169045  1.955354 6.943557e-11
+GO:0001909       0.5720092  2.333365 1.381646e-10
+GO:0016072      -0.4491031 -2.021848 8.811745e-10</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For a gene set that is down-regulated in NK cells:</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(GO_NK_Th,</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">geneSetID =</span> <span class="st">"GO:0002181"</span>,</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"GO:0002181 - cytoplasmic translation"</span></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Barcode%20plot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># And one that is up-regulated in NK cells</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(GO_NK_Th,</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">geneSetID =</span> <span class="st">"GO:0002443"</span>,</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"GO:0002443 - leukocyte mediated immunity"</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Barcode%20plot-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>enrichplot<span class="sc">::</span><span class="fu">dotplot</span>(GO_enrich, <span class="at">orderBy =</span> <span class="st">"p.adjust"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Enrich%20dotplot-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>enrichplot<span class="sc">::</span><span class="fu">dotplot</span>(GO_NK_Th, <span class="at">orderBy =</span> <span class="st">"p.adjust"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Enrich%20dotplot-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cnetplot</span>(GO_enrich, <span class="at">categorySize =</span> <span class="st">"pvalue"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: ggrepel: 68 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Gene%20concept%20network-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cnetplot</span>(GO_NK_Th, <span class="at">showCategory =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: ggrepel: 80 unlabeled data points (too many overlaps). Consider
+increasing max.overlaps</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Gene%20concept%20network-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>ego2 <span class="ot">&lt;-</span> <span class="fu">pairwise_termsim</span>(GO_NK_Th)</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">emapplot</span>(ego2, <span class="at">color=</span><span class="st">"p.adjust"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Enrichment%20map-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribution of t-statistic for genes included in significant gene sets or in selected gene sets:</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">30</span>, <span class="dv">3</span>, <span class="dv">3</span>))</span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Picking joint bandwidth of 0.787</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Ridgeplots-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is the difference with core_enrichment =F?</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th, <span class="at">core_enrichment =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Picking joint bandwidth of 0.975</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Ridgeplots-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select which GO terms to show in the ridge plot:</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_selection <span class="ot">&lt;-</span> GO_NK_Th[GO_NK_Th<span class="sc">$</span>ID <span class="sc">==</span> <span class="st">"GO:0002181"</span>, asis<span class="ot">=</span>T]</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th_selection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Picking joint bandwidth of 0.423</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Ridgeplots-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_selection <span class="ot">&lt;-</span> GO_NK_Th[GO_NK_Th<span class="sc">$</span>ID <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"GO:0002181"</span>,<span class="st">"GO:0022613"</span>,</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>                                                  <span class="st">"GO:0042254"</span>), </span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>                                                  asis<span class="ot">=</span>T]</span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th_selection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Picking joint bandwidth of 0.589</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Ridgeplots-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Terms that contain the keyword "leukocyte"</span></span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_selection <span class="ot">&lt;-</span> GO_NK_Th[<span class="fu">grep</span>(<span class="st">"leukocyte"</span>,GO_NK_Th<span class="sc">@</span>result<span class="sc">$</span>Description), asis<span class="ot">=</span>T]</span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th_selection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Picking joint bandwidth of 0.839</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Ridgeplots-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 
 </main>
