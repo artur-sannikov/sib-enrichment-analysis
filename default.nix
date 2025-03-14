@@ -15,9 +15,11 @@
 #  > "ggridges",
 #  > "tidyverse",
 #  > "styler",
-#  > "DESeq2"),
+#  > "DESeq2",
+#  > "tinytex"),
 #  > system_pkgs = c("quarto"),
 #  > git_pkgs = NULL,
+#  > tex_pkgs = c("framed"),
 #  > ide = "rstudio",
 #  > project_path = path_default_nix,
 #  > overwrite = TRUE,
@@ -45,9 +47,16 @@ let
       org_Hs_eg_db
       pathview
       styler
-      tidyverse;
+      tidyverse
+      tinytex;
   };
-    
+  
+  tex = (pkgs.texlive.combine {
+    inherit (pkgs.texlive) 
+      scheme-small
+      framed;
+  });
+  
   system_packages = builtins.attrValues {
     inherit (pkgs) 
       glibcLocales
@@ -69,7 +78,7 @@ let
    LC_PAPER = "en_US.UTF-8";
    LC_MEASUREMENT = "en_US.UTF-8";
 
-    buildInputs = [  rpkgs  system_packages  wrapped_pkgs ];
+    buildInputs = [  rpkgs tex system_packages  wrapped_pkgs ];
     
   }; 
 in
