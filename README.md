@@ -1,7 +1,7 @@
 # Swiss Institute of Bioinformatics - Enrichment Analysis Course
 
 This course took place on March 14, 2025 and it was streamed by
-the Swiss Institute of Bioinformatics.
+the Swiss Institute of Bioinformatics. The [course description](https://www.sib.swiss/training/course/20250314_ENRIC).
 
 ## How to run with Nix?
 
