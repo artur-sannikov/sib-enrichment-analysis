@@ -1,5 +1,6 @@
 slides/
 data/
+*_files/
 .Rprofile
 .Rhistory
 

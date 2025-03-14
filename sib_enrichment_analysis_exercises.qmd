@@ -1,0 +1,95 @@
+---
+title: "SIB - Enrichment Analysis"
+format: html
+editor: visual
+---
+
+## Exercise 1
+
+```{r}
+#| message: false
+#| echo: false
+library(clusterProfiler)
+library(enrichplot)
+library(pathview)
+library(org.Hs.eg.db)
+library(ggplot2)
+library(ggrepel)
+library(msigdbr)
+
+library(tidyverse) # for bonus code/dplyr/pipe
+
+# set seed
+set.seed(1234)
+```
+
+```{r}
+# Import DE table:
+NK_vs_Th <- read.csv("data/NK_vs_Th_diff_gene_exercise_1.csv",
+                   header = T)
+# Look at the structure of the data.frame:
+head(NK_vs_Th)
+
+# Search for a gene symbol in the data.frame, eg NCAM1 (CD56)
+NK_vs_Th[which(NK_vs_Th$symbol=="NCAM1"), ]
+```
+
+### Search for 2 genes in the data.frame, CPS1 and GZMB, and verify the effect of adjustment on their p-values
+
+```{r}
+genes <- c("CPS1", "GZMB")
+NK_vs_Th |>
+  filter(symbol %in% genes) |>
+  select(symbol, P.Value, p.adj)
+```
+
+CPS1 is not significant, while GZMB is significant.
+
+```{r}
+# Import the adaptive immune response gene set (gmt file)
+adaptive <- clusterProfiler::read.gmt("data/GOBP_ADAPTIVE_IMMUNE_RESPONSE.v7.5.1.gmt")
+nrow(adaptive) # 719
+```
+```{r}
+length(which(NK_vs_Th$symbol %in% adaptive$gene)) # 513
+```
+
+```{r}
+#| label: Count genes
+upregulated_th <- subset(
+  NK_vs_Th, 
+  NK_vs_Th$p.adj <= 0.05 & NK_vs_Th$logFC < 0
+)
+
+not_significant_genes <- subset(
+  NK_vs_Th,
+  NK_vs_Th$p.adj > 0.05
+  )
+
+summary_upregulated <- summary(upregulated_th$symbol %in% adaptive$gene)
+summary_not_significant <- summary(not_significant_genes$symbol %in% adaptive$gene)
+```
+
+
+```{r}
+#| label: Build contingency table
+
+contingency_table <- matrix(, nrow = 2, ncol = 2)
+contingency_table[[1]] <- summary_upregulated[[3]] # up, in gene set
+contingency_table[[2]] <- summary_upregulated[[2]] # up, not in gene set
+contingency_table[[3]] <- summary_not_significant[[3]] # down, in gene set
+contingency_table[[4]] <- summary_not_significant[[2]] # down, not in gene set
+
+# Convert to numeric
+contingency_table <- apply(contingency_table, 2, as.numeric)
+
+# Add rows and columns
+colnames(contingency_table) <- c("up", "down")
+rownames(contingency_table) <- c("in_set", "not_in_set")
+```
+
+```{r}
+#| label: Run Fisher's exact test
+fisher.test(contingency_table)
+```
+
