@@ -4,6 +4,7 @@
 #  > r_pkgs = c("BiocManager",
 #  > "clusterProfiler",
 #  > "org.Hs.eg.db",
+#  > "miniUI",
 #  > "pathview",
 #  > "enrichplot",
 #  > "biomaRt",
@@ -39,6 +40,7 @@ let
       ggplot2
       ggrepel
       ggridges
+      miniUI
       msigdbr
       org_Hs_eg_db
       pathview
