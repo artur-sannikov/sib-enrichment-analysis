@@ -8,7 +8,6 @@ editor: visual
 
 ```{r}
 #| message: false
-#| echo: false
 library(clusterProfiler)
 library(enrichplot)
 library(pathview)
@@ -158,7 +157,7 @@ ggplot(NK_vs_Th, aes(
 ## Exercise 2 - Gene set enrichment analysis (GSEA)
 
 ```{r}
-#| label: Created t-statistic vector
+#| label: Create t-statistic vector
 gl <- NK_vs_Th$t
 names(gl) <- make.names(NK_vs_Th$symbol, unique = T)
 gl <- gl[order(gl, decreasing = T)]
@@ -339,4 +338,154 @@ ridgeplot(GO_NK_Th_selection)
 # Terms that contain the keyword "leukocyte"
 GO_NK_Th_selection <- GO_NK_Th[grep("leukocyte", GO_NK_Th@result$Description), asis = TRUE]
 ridgeplot(GO_NK_Th_selection)
+```
+
+## Exercise 4 - Enrichment of other collections of gene sets
+
+```{r}
+#| label: Convert genes
+keytypes(org.Hs.eg.db)
+# convert from= "ENSEMBL" to "SYMBOL" and "ENTREZID"
+gene_convert <- bitr(as.character(NK_vs_Th$ensembl_gene_id),
+  fromType = "ENSEMBL",
+  toType = c("SYMBOL", "ENTREZID"), OrgDb = "org.Hs.eg.db"
+)
+
+# Check the format of the data frame obtained after conversion:
+head(gene_convert)
+dim(gene_convert)
+```
+
+```{r}
+#| label: Read KEGG annotation
+
+# Create a vector of genes that are coded with the EntrezID:
+# use the sorted gene list gl previously created:
+gl_kegg <- cbind(SYMBOL = names(gl), t = gl)
+
+# merge with converted gene symbols to combine both:
+# by default the data frames are merged on the columns with names they both have
+gl_kegg <- merge(gl_kegg, gene_convert)
+head(gl_kegg)
+
+gl_kegg_list <- as.numeric(as.character(gl_kegg$t))
+names(gl_kegg_list) <- as.character(gl_kegg$ENTREZID)
+gl_kegg_list <- sort(gl_kegg_list, decreasing = T)
+
+# run GSEA of KEGG (please note that requires internet connection to download the KEGG annotations from http)
+KEGG_NK_Th <- gseKEGG(gl_kegg_list,
+  organism = "hsa", "ncbi-geneid",
+  minGSSize = 30,
+  eps = 0,
+  seed = T
+)
+```
+
+```{r}
+# What does it contain?
+str(KEGG_NK_Th)
+```
+
+```{r}
+#| label: Upregulated genes in KEGG
+
+# How many gene sets are up-regulated?
+sum(KEGG_NK_Th@result$NES > 0) # 17
+```
+
+
+```{r}
+#| label: function-grep_kegg_description
+#|
+grep_kegg_description <- function(pattern) {
+  return(grep(pattern, tolower((KEGG_NK_Th@result$Description))))
+}
+```
+
+
+```{r}
+# Is their an immune-related gene set significant?
+grep_kegg_description("immune")
+```
+```{r}
+#| label: Upregulated NK-related  gene set
+
+# Is their an NK gene set significant?
+grep_kegg_description("natural killer") # 3
+```
+```{r}
+#| label: Total number of built-in KEGG gene sets
+
+# What is the total number of built-in KEGG gene sets?
+length(KEGG_NK_Th@geneSets) # 265
+```
+
+```{r}
+#| label: Extract Entrez id for NK-related gene set
+KEGG_NK_Th[grep_kegg_description("natural killer"), ] |>
+  select(ID, Description) # hsa04650
+```
+```{r}
+#| label: Genes involved in Natural killer cell mediated cytotoxicity (hsa04650)
+
+KEGG_NK_Th@geneSets$hsa04650
+```
+
+```{r}
+# pathview map with non-significant genes in grey:
+# set log fold change of non-significant genes to 0:
+NK_vs_Th$logFC_0 <- ifelse(NK_vs_Th$p.adj > 0.05, 0, NK_vs_Th$logFC)
+
+# create named vector of fold change values:
+genePW <- NK_vs_Th$logFC_0
+names(genePW) <- NK_vs_Th$symbol
+
+# Create pathview map for Ribosome = hsa03010
+pathview(
+  gene.data = genePW,
+  pathway.id = "hsa03010",
+  species = "hsa",
+  gene.idtype = "SYMBOL"
+)
+
+# Create pathview map of Natural killer cell mediated cytotoxicity = hsa04650
+pathview(
+  gene.data = genePW,
+  pathway.id = "hsa04650",
+  species = "hsa",
+  gene.idtype = "SYMBOL"
+)
+```
+
+```{r}
+# Import hallmark, convert to term2gene and run GSEA:
+term2gene_h <- msigdbr(species = "Homo sapiens", category = "H")
+# Or alternatively:
+# term2gene_h<-read.gmt("h.all.v2023.2.Hs.symbols.gmt")
+
+head(term2gene_h)
+length(unique(term2gene_h$gs_name)) # 50
+
+# Run GSEA with the function that allows to use custom gene sets,
+# provide the named vector of t statistics
+h_NK_vs_Th <- GSEA(gl,
+  TERM2GENE = term2gene_h[, c("gs_name", "gene_symbol")],
+  eps = 0,
+  seed = T
+)
+
+# Number of significant gene sets:
+length(which(h_NK_vs_Th@result$p.adjust <= 0.05))
+```
+
+```{r}
+# A dotplot with geneRatio or NES on the x-axis:
+dotplot(h_NK_vs_Th)
+dotplot(h_NK_vs_Th, x = "NES", orderBy = "p.adjust")
+
+# A barcode plot:
+gseaplot2(h_NK_vs_Th,
+  geneSetID = "HALLMARK_MTORC1_SIGNALING",
+  title = "HALLMARK_MTORC1_SIGNALING"
+)
 ```
