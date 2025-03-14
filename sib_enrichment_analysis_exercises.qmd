@@ -92,4 +92,118 @@ rownames(contingency_table) <- c("in_set", "not_in_set")
 #| label: Run Fisher's exact test
 fisher.test(contingency_table)
 ```
+The odds ratio tells us how different the two proportions are.
+
+If the confidence interval does not include 1, then p-value is small.
+We can reject null hypothesis thatthe odds ratio is equal to 1.
+
+There are more genes that are upregulated in the gene set than the genes
+that are not upregulated in the gene set.
+
+```{r}
+# Test 3 gene sets among the genes up-regulated in NK cells,
+# with enricher()
+# First, obtain the genes up-regulated in NK:
+
+nk_up_genes <- subset(NK_vs_Th, NK_vs_Th$logFC > 0 & NK_vs_Th$p.adj <= 0.05)$symbol
+
+# Import 2 other gene sets, 1 un-related to immune cells:
+hair <- read.gmt("data/GOBP_HAIR_CELL_DIFFERENTIATION.v7.5.1.gmt")
+dim(hair)
+cell_active <- read.gmt("data/GOBP_CELL_ACTIVATION.v7.5.1.gmt")
+dim(cell_active)
+
+# Combine the 3 gene sets into a single data.frame for the TERM2GENE argument:
+genesets3 <- rbind(adaptive, hair, cell_active)
+
+hyper_3genesets <- enricher(gene = nk_up_genes,
+                      universe = NK_vs_Th$symbol,
+                      TERM2GENE = genesets3,
+                      maxGSSize = 1000)
+hyper_3genesets@result
+```
+
+```{r}
+sig_genes <- subset(NK_vs_Th, NK_vs_Th$symbol %in% adaptive$gene &
+                      NK_vs_Th$p.adj <= 0.05)
+sig_genes_label <- subset(sig_genes, sig_genes$p.adj <= 0.00001)
+
+ggplot(NK_vs_Th, aes(x = logFC,
+                     y = -log10(p.adj))) +
+        geom_point(color = "grey87")  +
+        ggtitle("Genes belonging to the adaptive immune response gene set") +
+        theme_bw() +
+        geom_text_repel(data = sig_genes_label, 
+                        aes(x = logFC,
+                            y = -log10(p.adj),label=symbol),
+                        max.overlaps = 20) +
+        geom_point(data=sig_genes, col = "dodgerblue2") +
+        theme(legend.position = "none") +
+        scale_x_continuous(name = expression("log"[2]*"(fold change), NK vs Th cells")) +
+        scale_y_continuous(name = expression("-"*"log"[10]*"(adj. p-value)")) +
+        geom_hline(yintercept = -log10(0.05), linetype="dashed") +
+        geom_vline(xintercept = 0, linetype="dashed")
+```
+
+
+## Exercise 2 - Gene set enrichment analysis (GSEA)
+
+```{r}
+#| label: Created t-statistic vector
+gl <- NK_vs_Th$t
+names(gl) <- make.names(NK_vs_Th$symbol, unique = T)
+gl <- gl[order(gl, decreasing = T)]
+
+GO_NK_Th <- gseGO(gl, ont = "BP",
+                OrgDb = org.Hs.eg.db,
+                keyType = "SYMBOL",
+                minGSSize = 30,
+                eps = 0,
+                seed = T
+              )
+
+```
+
+```{r}
+#| label: Explore t-statistic
+
+GO_NK_Th
+
+# Class is gseaResult
+class(GO_NK_Th)
+
+# Is the adaptive immune response gene set significant?
+GO_NK_Th[GO_NK_Th@result$Description == "adaptive immune response", ] # yes
+
+
+# How many gene sets are down- or up-regulated?
+count_gene_sets <- function(gsea, p_value) {
+  up <- summary(gsea@result$p.adjust < p_value & gsea@result$NES > 0)
+  down <- summary(gsea@result$p.adjust < p_value & gsea@result$NES < 0)
+  
+  return(list(upregulated = up, downregulated = down))
+}
+
+# 290 upregulated, 61 downregulated
+count_gene_sets(GO_NK_Th, 0.05)
+```
+
+```{r}
+#| label: Simplify GSEA results
+GO_NK_Th_simplify <- clusterProfiler::simplify(GO_NK_Th)
+GO_NK_Th_simplify@result[GO_NK_Th_simplify@result$Description=="adaptive immune response",]
+```
+
+```{r}
+#| label: Obtain list of leading edge genes
+
+unlist(strsplit(GO_NK_Th@result[GO_NK_Th@result$Description=="adaptive immune response",11],
+                "\\/"))
+```
+
+```{r}
+#| label: Obtain the list of all genes included in a GO term
+
+GO_NK_Th@geneSets$`GO:0002250`
+```
 
