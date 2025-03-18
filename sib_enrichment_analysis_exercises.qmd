@@ -34,7 +34,7 @@ head(NK_vs_Th)
 NK_vs_Th[which(NK_vs_Th$symbol == "NCAM1"), ]
 ```
 
-### Search for 2 genes in the data.frame, CPS1 and GZMB, and verify the effect of adjustment on their p-values
+Search for 2 genes in the data.frame, CPS1 and GZMB, and verify the effect of adjustment on their p-values
 
 ```{r}
 genes <- c("CPS1", "GZMB")
@@ -316,29 +316,39 @@ emapplot(ego2, color = "p.adjust")
 
 ```{r}
 #| label: Ridgeplots
+#| fig-height: 12
+
+# Wrap lenght of labels
+label_format <- 50
 
 # Distribution of t-statistic for genes included in significant gene sets or in selected gene sets:
-# ar(mar = c(15, 30, 3, 3))
-ridgeplot(GO_NK_Th)
+ridgeplot(GO_NK_Th, label_format = label_format)
 
 # What is the difference with core_enrichment =F?
-ridgeplot(GO_NK_Th, core_enrichment = FALSE)
+ridgeplot(GO_NK_Th, core_enrichment = FALSE, label_format = label_format)
 
 # Select which GO terms to show in the ridge plot:
-GO_NK_Th_selection <- GO_NK_Th[GO_NK_Th$ID == "GO:0002181", asis = TRUE]
-ridgeplot(GO_NK_Th_selection)
-GO_NK_Th_selection <- GO_NK_Th[
+GO_NK_Th_selection_1 <- GO_NK_Th[GO_NK_Th$ID == "GO:0002181", asis = TRUE]
+GO_NK_Th_selection_3 <- GO_NK_Th[
   GO_NK_Th$ID %in% c(
     "GO:0002181", "GO:0022613",
     "GO:0042254"
   ),
   asis = TRUE
 ]
-ridgeplot(GO_NK_Th_selection)
+
 # Terms that contain the keyword "leukocyte"
 GO_NK_Th_selection <- GO_NK_Th[grep("leukocyte", GO_NK_Th@result$Description), asis = TRUE]
-ridgeplot(GO_NK_Th_selection)
+ridgeplot(GO_NK_Th_selection, label_format = label_format)
 ```
+
+
+```{r}
+#| label: Ridge plot of selected GO terms
+ridgeplot(GO_NK_Th_selection_1)
+ridgeplot(GO_NK_Th_selection_3)
+```
+
 
 ## Exercise 4 - Enrichment of other collections of gene sets
 
@@ -487,5 +497,74 @@ dotplot(h_NK_vs_Th, x = "NES", orderBy = "p.adjust")
 gseaplot2(h_NK_vs_Th,
   geneSetID = "HALLMARK_MTORC1_SIGNALING",
   title = "HALLMARK_MTORC1_SIGNALING"
+)
+```
+
+## Extra exercises
+
+```{r}
+#| label: Significant Reactome gene sets
+
+# Read in Reactome genes
+reactome_gene_sets <- msigdbr(category = "C2", subcategory = "CP:REACTOME")
+
+# Run GSEA with Reactome database
+reactome_NK_vs_Th <- GSEA(gl,
+  minGSSize = 30,
+  TERM2GENE = reactome_gene_sets[, c("gs_name", "gene_symbol")],
+  eps = 0, seed = TRUE
+)
+
+# Count number of significant gene sets
+reactome_significant <- length(which(reactome_NK_vs_Th@result$p.adjust < 0.05))
+print(paste("Number of significant gene sets with Reactome database is", reactome_significant))
+```
+
+```{r}
+#| label: Visualize Reactome gene sets (barplot)
+par(mar = c(5, 20, 3, 3) + 0.1)
+# Recode long labels
+reactome_NK_vs_Th@result$Description_short <-
+  reactome_NK_vs_Th@result$Description |>
+  case_match(
+    "REACTOME_REGULATION_OF_EXPRESSION_OF_SLITS_AND_ROBOS" ~ "Slits/robos expression regulation",
+    "REACTOME_RRNA_PROCESSING" ~ "rRNA processing",
+    "REACTOME_INFLUENZA_INFECTION" ~ "Influenza infection",
+    "REACTOME_SELENOAMINO_ACID_METABOLISM" ~ "Selenoaminoacid metabolism",
+    "REACTOME_SRP_DEPENDENT_COTRANSLATIONAL_PROTEIN_TARGETING_TO_MEMBRANE" ~ "SRP-dep. cotranslational membrane targeting",
+    "REACTOME_RESPONSE_OF_EIF2AK4_GCN2_TO_AMINO_ACID_DEFICIENCY" ~ "EIF2AK4(GCN2) AA deficiency response",
+    "REACTOME_NONSENSE_MEDIATED_DECAY_NMD" ~ "Nonsense mediated decay NMD",
+    "REACTOME_EUKARYOTIC_TRANSLATION_INITIATION" ~ "Eukaryotic translation initiation",
+    "REACTOME_TRANSLATION" ~ "Translation",
+    "REACTOME_EUKARYOTIC_TRANSLATION_ELONGATION" ~ "Eukaryotic translation elongation"
+  )
+
+# Bar plot
+barplot(rev(-log10(reactome_NK_vs_Th@result$p.adjust[1:10])),
+  horiz = TRUE, names = rev(reactome_NK_vs_Th@result$Description_short[1:10]),
+  las = 2, xlab = "-log10(adj.p-value)",
+  cex.names = 0.7,
+  col = "lightgreen"
+)
+abline(v = -log10(0.05))
+```
+
+```{r}
+#| label: Visualize Reactome gene sets (gseaplot - downregulated)
+#| fig-height: 8
+
+gseaplot(reactome_NK_vs_Th,
+  geneSetID = "REACTOME_EUKARYOTIC_TRANSLATION_ELONGATION",
+  title = "Reactome - Eukaryotic translation elongation"
+)
+```
+
+```{r}
+#| label: Visualize Reactome gene sets (gseaplot - upregulated)
+#| fig-height: 8
+
+gseaplot(reactome_NK_vs_Th,
+  geneSetID = "REACTOME_DAP12_INTERACTIONS",
+  title = "Reactome - DAP12 interaction"
 )
 ```

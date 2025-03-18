@@ -135,8 +135,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 7624 ENSG00000149294  NCAM1 12.19755 6.992219 3.81e-08 2.845553e-06</code></pre>
 </div>
 </div>
-<section id="search-for-2-genes-in-the-data.frame-cps1-and-gzmb-and-verify-the-effect-of-adjustment-on-their-p-values" class="level3">
-<h3 class="anchored" data-anchor-id="search-for-2-genes-in-the-data.frame-cps1-and-gzmb-and-verify-the-effect-of-adjustment-on-their-p-values">Search for 2 genes in the data.frame, CPS1 and GZMB, and verify the effect of adjustment on their p-values</h3>
+<p>Search for 2 genes in the data.frame, CPS1 and GZMB, and verify the effect of adjustment on their p-values</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"CPS1"</span>, <span class="st">"GZMB"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>NK_vs_Th <span class="sc">|&gt;</span></span>
@@ -299,7 +298,6 @@ increasing max.overlaps</code></pre>
 </div>
 </div>
 </div>
-</section>
 </section>
 <section id="exercise-2---gene-set-enrichment-analysis-gsea" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-2---gene-set-enrichment-analysis-gsea">Exercise 2 - Gene set enrichment analysis (GSEA)</h2>
@@ -798,9 +796,11 @@ increasing max.overlaps</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribution of t-statistic for genes included in significant gene sets or in selected gene sets:</span></span>
-<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ar(mar = c(15, 30, 3, 3))</span></span>
-<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Wrap lenght of labels</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>label_format <span class="ot">=</span> <span class="dv">50</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Distribution of t-statistic for genes included in significant gene sets or in selected gene sets:</span></span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th, <span class="at">label_format =</span> label_format)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Picking joint bandwidth of 0.787</code></pre>
 </div>
@@ -812,7 +812,7 @@ increasing max.overlaps</code></pre>
 </div>
 </div>
 <div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is the difference with core_enrichment =F?</span></span>
-<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th, <span class="at">core_enrichment =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th, <span class="at">core_enrichment =</span> <span class="cn">FALSE</span>, <span class="at">label_format =</span> label_format)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Picking joint bandwidth of 0.975</code></pre>
 </div>
@@ -824,10 +824,20 @@ increasing max.overlaps</code></pre>
 </div>
 </div>
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Select which GO terms to show in the ridge plot:</span></span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_selection <span class="ot">&lt;-</span> GO_NK_Th[GO_NK_Th<span class="sc">$</span>ID <span class="sc">==</span> <span class="st">"GO:0002181"</span>, asis <span class="ot">=</span> <span class="cn">TRUE</span>]</span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th_selection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_selection_1 <span class="ot">&lt;-</span> GO_NK_Th[GO_NK_Th<span class="sc">$</span>ID <span class="sc">==</span> <span class="st">"GO:0002181"</span>, asis <span class="ot">=</span> <span class="cn">TRUE</span>]</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_selection_3 <span class="ot">&lt;-</span> GO_NK_Th[</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  GO_NK_Th<span class="sc">$</span>ID <span class="sc">%in%</span> <span class="fu">c</span>(</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GO:0002181"</span>, <span class="st">"GO:0022613"</span>,</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GO:0042254"</span></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>  asis <span class="ot">=</span> <span class="cn">TRUE</span></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Terms that contain the keyword "leukocyte"</span></span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_selection <span class="ot">&lt;-</span> GO_NK_Th[<span class="fu">grep</span>(<span class="st">"leukocyte"</span>, GO_NK_Th<span class="sc">@</span>result<span class="sc">$</span>Description), asis <span class="ot">=</span> <span class="cn">TRUE</span>]</span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th_selection, <span class="at">label_format =</span> label_format)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Picking joint bandwidth of 0.423</code></pre>
+<pre><code>Picking joint bandwidth of 0.839</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -836,34 +846,27 @@ increasing max.overlaps</code></pre>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_selection <span class="ot">&lt;-</span> GO_NK_Th[</span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  GO_NK_Th<span class="sc">$</span>ID <span class="sc">%in%</span> <span class="fu">c</span>(</span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GO:0002181"</span>, <span class="st">"GO:0022613"</span>,</span>
-<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"GO:0042254"</span></span>
-<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>  asis <span class="ot">=</span> <span class="cn">TRUE</span></span>
-<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>]</span>
-<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th_selection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th_selection_1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Picking joint bandwidth of 0.423</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Ridge%20plot%20of%20selected%20GO%20terms-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th_selection_3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Picking joint bandwidth of 0.589</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Ridgeplots-4.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Terms that contain the keyword "leukocyte"</span></span>
-<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>GO_NK_Th_selection <span class="ot">&lt;-</span> GO_NK_Th[<span class="fu">grep</span>(<span class="st">"leukocyte"</span>, GO_NK_Th<span class="sc">@</span>result<span class="sc">$</span>Description), asis <span class="ot">=</span> <span class="cn">TRUE</span>]</span>
-<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ridgeplot</span>(GO_NK_Th_selection)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Picking joint bandwidth of 0.839</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Ridgeplots-5.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Ridge%20plot%20of%20selected%20GO%20terms-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1291,7 +1294,7 @@ The order of those tied genes will be arbitrary, which may produce unexpected re
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sib_enrichment_analysis_exercises_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1299,7 +1302,7 @@ The order of those tied genes will be arbitrary, which may produce unexpected re
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sib_enrichment_analysis_exercises_files/figure-html/unnamed-chunk-37-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/unnamed-chunk-38-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1311,7 +1314,99 @@ The order of those tied genes will be arbitrary, which may produce unexpected re
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="sib_enrichment_analysis_exercises_files/figure-html/unnamed-chunk-37-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/unnamed-chunk-38-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="extra-exercises" class="level2">
+<h2 class="anchored" data-anchor-id="extra-exercises">Extra exercises</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb136"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb136-1"><a href="#cb136-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in Reactome genes</span></span>
+<span id="cb136-2"><a href="#cb136-2" aria-hidden="true" tabindex="-1"></a>reactome_gene_sets <span class="ot">&lt;-</span> <span class="fu">msigdbr</span>(<span class="at">category =</span> <span class="st">"C2"</span>, <span class="at">subcategory =</span> <span class="st">"CP:REACTOME"</span>)</span>
+<span id="cb136-3"><a href="#cb136-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb136-4"><a href="#cb136-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Run GSEA with Reactome database</span></span>
+<span id="cb136-5"><a href="#cb136-5" aria-hidden="true" tabindex="-1"></a>reactome_NK_vs_Th <span class="ot">&lt;-</span> <span class="fu">GSEA</span>(gl,</span>
+<span id="cb136-6"><a href="#cb136-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">minGSSize =</span> <span class="dv">30</span>,</span>
+<span id="cb136-7"><a href="#cb136-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">TERM2GENE =</span> reactome_gene_sets[, <span class="fu">c</span>(<span class="st">"gs_name"</span>, <span class="st">"gene_symbol"</span>)],</span>
+<span id="cb136-8"><a href="#cb136-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">eps =</span> <span class="dv">0</span>, <span class="at">seed =</span> <span class="cn">TRUE</span></span>
+<span id="cb136-9"><a href="#cb136-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>preparing geneSet collections...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>GSEA analysis...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in preparePathwaysAndStats(pathways, stats, minSize, maxSize, gseaParam, : There are ties in the preranked stats (0.07% of the list).
+The order of those tied genes will be arbitrary, which may produce unexpected results.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>leading edge analysis...</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>done...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb142"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb142-1"><a href="#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count number of significant gene sets</span></span>
+<span id="cb142-2"><a href="#cb142-2" aria-hidden="true" tabindex="-1"></a>reactome_significant <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">which</span>(reactome_NK_vs_Th<span class="sc">@</span>result<span class="sc">$</span>p.adjust <span class="sc">&lt;</span> <span class="fl">0.05</span>))</span>
+<span id="cb142-3"><a href="#cb142-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">"Number of significant gene sets with Reactome database is"</span>, reactome_significant))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Number of significant gene sets with Reactome database is 53"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb144"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb144-1"><a href="#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">3</span>, <span class="dv">3</span>) <span class="sc">+</span> <span class="fl">0.1</span>)</span>
+<span id="cb144-2"><a href="#cb144-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Recode long labels</span></span>
+<span id="cb144-3"><a href="#cb144-3" aria-hidden="true" tabindex="-1"></a>reactome_NK_vs_Th<span class="sc">@</span>result<span class="sc">$</span>Description_short <span class="ot">&lt;-</span></span>
+<span id="cb144-4"><a href="#cb144-4" aria-hidden="true" tabindex="-1"></a>  reactome_NK_vs_Th<span class="sc">@</span>result<span class="sc">$</span>Description <span class="sc">|&gt;</span></span>
+<span id="cb144-5"><a href="#cb144-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">case_match</span>(</span>
+<span id="cb144-6"><a href="#cb144-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"REACTOME_REGULATION_OF_EXPRESSION_OF_SLITS_AND_ROBOS"</span> <span class="sc">~</span> <span class="st">"Slits/robos expression regulation"</span>,</span>
+<span id="cb144-7"><a href="#cb144-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">"REACTOME_RRNA_PROCESSING"</span> <span class="sc">~</span> <span class="st">"rRNA processing"</span>,</span>
+<span id="cb144-8"><a href="#cb144-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">"REACTOME_INFLUENZA_INFECTION"</span> <span class="sc">~</span> <span class="st">"Influenza infection"</span>,</span>
+<span id="cb144-9"><a href="#cb144-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"REACTOME_SELENOAMINO_ACID_METABOLISM"</span> <span class="sc">~</span> <span class="st">"Selenoaminoacid metabolism"</span>,</span>
+<span id="cb144-10"><a href="#cb144-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"REACTOME_SRP_DEPENDENT_COTRANSLATIONAL_PROTEIN_TARGETING_TO_MEMBRANE"</span> <span class="sc">~</span> <span class="st">"SRP-dep. cotranslational membrane targeting"</span>,</span>
+<span id="cb144-11"><a href="#cb144-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">"REACTOME_RESPONSE_OF_EIF2AK4_GCN2_TO_AMINO_ACID_DEFICIENCY"</span> <span class="sc">~</span> <span class="st">"EIF2AK4(GCN2) AA deficiency response"</span>,</span>
+<span id="cb144-12"><a href="#cb144-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">"REACTOME_NONSENSE_MEDIATED_DECAY_NMD"</span> <span class="sc">~</span> <span class="st">"Nonsense mediated decay NMD"</span>,</span>
+<span id="cb144-13"><a href="#cb144-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">"REACTOME_EUKARYOTIC_TRANSLATION_INITIATION"</span> <span class="sc">~</span> <span class="st">"Eukaryotic translation initiation"</span>,</span>
+<span id="cb144-14"><a href="#cb144-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">"REACTOME_TRANSLATION"</span> <span class="sc">~</span> <span class="st">"Translation"</span>,</span>
+<span id="cb144-15"><a href="#cb144-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">"REACTOME_EUKARYOTIC_TRANSLATION_ELONGATION"</span> <span class="sc">~</span> <span class="st">"Eukaryotic translation elongation"</span></span>
+<span id="cb144-16"><a href="#cb144-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb144-17"><a href="#cb144-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb144-18"><a href="#cb144-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Bar plot</span></span>
+<span id="cb144-19"><a href="#cb144-19" aria-hidden="true" tabindex="-1"></a><span class="fu">barplot</span>(<span class="fu">rev</span>(<span class="sc">-</span><span class="fu">log10</span>(reactome_NK_vs_Th<span class="sc">@</span>result<span class="sc">$</span>p.adjust[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>])),</span>
+<span id="cb144-20"><a href="#cb144-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">horiz =</span> <span class="cn">TRUE</span>, <span class="at">names =</span> <span class="fu">rev</span>(reactome_NK_vs_Th<span class="sc">@</span>result<span class="sc">$</span>Description_short[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]),</span>
+<span id="cb144-21"><a href="#cb144-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">las =</span> <span class="dv">2</span>, <span class="at">xlab =</span> <span class="st">"-log10(adj.p-value)"</span>,</span>
+<span id="cb144-22"><a href="#cb144-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex.names =</span> <span class="fl">0.7</span>,</span>
+<span id="cb144-23"><a href="#cb144-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">col =</span> <span class="st">"lightgreen"</span></span>
+<span id="cb144-24"><a href="#cb144-24" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb144-25"><a href="#cb144-25" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Visualize%20Reactome%20gene%20sets%20(barplot)-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb145"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb145-1"><a href="#cb145-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(reactome_NK_vs_Th, <span class="at">geneSetID =</span> <span class="st">"REACTOME_EUKARYOTIC_TRANSLATION_ELONGATION"</span>,</span>
+<span id="cb145-2"><a href="#cb145-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Reactome - Eukaryotic translation elongation"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Visualize%20Reactome%20gene%20sets%20(gseaplot%20-%20downregulated)-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb146"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb146-1"><a href="#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gseaplot</span>(reactome_NK_vs_Th, <span class="at">geneSetID =</span> <span class="st">"REACTOME_DAP12_INTERACTIONS"</span>,</span>
+<span id="cb146-2"><a href="#cb146-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">title =</span> <span class="st">"Reactome - DAP12 interaction"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="sib_enrichment_analysis_exercises_files/figure-html/Visualize%20Reactome%20gene%20sets%20(gseaplot%20-%20upregulated)-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
