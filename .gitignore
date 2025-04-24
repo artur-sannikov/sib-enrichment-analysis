@@ -13,3 +13,6 @@ _quarto.yaml.local
 docs/site_libs/
 docs/robots.txt
 docs/search.json
+sib_enrichment_analysis_exercises_cache/
+
+/_*.local
