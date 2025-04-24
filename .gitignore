@@ -6,11 +6,10 @@ data/
 *.png
 *.xml
 *.rmarkdown
-
+_quarto.yaml.local
 
 /.quarto/
 /_site/
 docs/site_libs/
 docs/robots.txt
 docs/search.json
-
