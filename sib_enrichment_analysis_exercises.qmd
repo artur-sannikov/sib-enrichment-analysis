@@ -550,6 +550,28 @@ abline(v = -log10(0.05))
 ```
 
 ```{r}
+#| label: Visualize Reactome gene sets (another barplot version)
+#| fig-width: 10
+reactome_NK_vs_Th@result$Description_short2<-gsub("_", " ", 
+                                                  gsub("REACTOME_", "",
+                                                       reactome_NK_vs_Th@result$Description))
+reactome_NK_vs_Th_sorted<-reactome_NK_vs_Th@result[order(reactome_NK_vs_Th@result$NES,
+                                                         decreasing = F),]
+
+reactome_NK_vs_Th_sorted$colors <- ifelse(reactome_NK_vs_Th_sorted$NES > 0, "red", "blue")
+
+
+par(mar = c(4, 30, 1, 1)) # Make the figure margins larger
+barplot(reactome_NK_vs_Th_sorted$NES,
+        horiz = TRUE, names = reactome_NK_vs_Th_sorted$Description_short2,
+        las = 2, xlab = "Normalized enrichment score",
+        cex.names = 0.5,
+        col = reactome_NK_vs_Th_sorted$colors
+)
+```
+
+
+```{r}
 #| label: Visualize Reactome gene sets (gseaplot - downregulated)
 #| fig-height: 8
 
